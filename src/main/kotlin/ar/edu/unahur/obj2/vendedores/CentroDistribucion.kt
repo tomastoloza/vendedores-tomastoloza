@@ -13,17 +13,7 @@ class CentroDistribucion(val ciudad: Ciudad) {
     }
 
     // el vendedor estrella, que es el que tiene mayor puntaje total por certificaciones.
-    fun getVendedorEstrella(): Vendedor? {
-        var maxPuntaje = 0
-        var vendedorEstrella: Vendedor? = null
-        this.vendedores.forEach { it ->
-            if (it.puntajeCertificaciones() > maxPuntaje) {
-                maxPuntaje = it.puntajeCertificaciones()
-                vendedorEstrella = it
-            }
-        }
-        return vendedorEstrella
-    }
+    fun getVendedorEstrella(): Vendedor? = this.vendedores.maxBy { vendedor -> vendedor.puntajeCertificaciones() }
 
     // si puede cubrir, o no, una ciudad dada. La condición es que al menos uno de los vendedores registrados pueda trabajar en esa ciudad.
     fun puedeCubrir(ciudad: Ciudad): Boolean {
@@ -36,7 +26,7 @@ class CentroDistribucion(val ciudad: Ciudad) {
     }
 
     //la colección de vendedores genéricos registrados. Un vendedor se considera genérico si tiene al menos una certificación que no es de productos.
-    fun getVendedoresGenericos(ciudad: Ciudad): MutableList<Vendedor> {
+    fun getVendedoresGenericos(): MutableList<Vendedor> {
         val vendedoresGenericos = mutableListOf<Vendedor>()
         for (vendedor in this.vendedores) {
             if (vendedor.otrasCertificaciones() > 0) {
@@ -50,5 +40,7 @@ class CentroDistribucion(val ciudad: Ciudad) {
     fun esRobusto(): Boolean {
         return this.vendedores.count { vendedor -> vendedor.esFirme() } >= 3
     }
+
+    fun getVendedores() : MutableList<Vendedor> = this.vendedores
 
 }
